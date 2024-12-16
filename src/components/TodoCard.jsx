@@ -35,6 +35,7 @@ export default function TodoCard({ todo }) {
         setTodos((prevTodos) =>
             prevTodos.filter((prevTodo) => prevTodo.id !== todo.id)
         );
+        setShowModal(false); // Close the modal after deletion
     };
 
     useEffect(() => {

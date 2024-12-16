@@ -2,19 +2,24 @@ import { useContext, useState } from "react";
 import { TodoContext } from "../contexts/TodoContext";
 import { useNavigate } from "react-router-dom";
 import { Button, Container, Form } from "react-bootstrap";
+import { useUser } from '../contexts/UserContext';
 
 export default function AddTodo() {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [completed, setCompleted] = useState(false);
 
-    // Destructure the values from TodoContext
-    const { todos, setTodos } = useContext(TodoContext);
+    const { user } = useUser();
+    const { setTodos, todos } = useContext(TodoContext);
     const navigate = useNavigate();
 
-    function addTodo(event) {
+    const addTodo = (event) => {
         event.preventDefault();
-        setTodos([...todos, { id: Date.now(), title, description, completed }])
+        if (!user) {
+            alert('Please login first');
+            return;
+        }
+        setTodos([...todos, { id: Date.now(), userId: user.id, title, description, completed }])
         navigate("/");
     }
 
